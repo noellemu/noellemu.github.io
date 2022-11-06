@@ -1,14 +1,14 @@
 # REMEMBER TO EDIT THIS BEFORE DEPLOYING!!!
 
 # the path to your blog's icon:
-favicon: /favicon.png
+favicon: /favicon.ico
 
 # the path to manifest.json
 manifest: /manifest.json
 
 # [Open Graph Protocol](https://ogp.me/)
 og_enabled: true
-og_image: /favicon.png
+og_image: /favicon.ico
 og:
   # customize og properties here which will replace the defaults
 
