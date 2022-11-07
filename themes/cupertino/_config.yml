@@ -33,12 +33,12 @@ hashtag_prefix_before_tags: true
 # rainbow!
 rainbow_banner: false
 rainbow_banner_colors:
-  - '#e50000'
-  - '#ff8d00'
-  - '#ffee00'
-  - '#008121'
-  - '#004cff'
-  - '#760188'
+  - "#e50000"
+  - "#ff8d00"
+  - "#ffee00"
+  - "#008121"
+  - "#004cff"
+  - "#760188"
 # choose from [auto, always]
 rainbow_banner_shown: auto
 # Pride Month by default
@@ -91,8 +91,8 @@ footer:
   Projects:
     # the items
     Testify (A distributed monitoring system): https://github.com/noellemu/testify
-    Metropolitan (TODO) (A framework for building distributed systems): '' 
-    Kopi (TODO) (An ops script execution and management system): ''
+    Kopi (TODO) (A framework for building distributed systems): ""
+    Metropolitan (TODO) (An ops script execution and management system): ""
     # Hexo Theme Cupertino: https://github.com/MrWillCom/hexo-theme-cupertino
     # A Calendar: https://github.com/MrWillCom/a-calendar
     # Auto Mirroring Bucket: https://github.com/MrWillCom/auto-mirroring-bucket
@@ -123,5 +123,4 @@ search_path: search.json
 
 plugins:
   - hexo-generator-feed
-
 # REMEMBER TO EDIT THIS BEFORE DEPLOYING!!!
