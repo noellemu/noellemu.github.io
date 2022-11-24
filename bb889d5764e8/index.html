@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="never">
+  
+  <title>Go 语言中的 make 函数 - Noelle Mu | SRE | Open Source</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Go 语言中的 make 函数 - Noelle Mu | SRE | Open Source" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://site.noellemu.cloud/bb889d5764e8/index.html" />
+  
+  <meta property="og:image" content="/favicon.ico" />
+  
+  <meta property="og:article:published_time" content="2022-11-24T16:13:56.000Z" />
+  
+  <meta property="og:article:author" content="Noelle Mu" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Noelle Mu</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/resume">Resume</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/tags">Tags</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/noellemu" target="_blank">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/Golang/">Golang</a>
+        
+            <a href="/categories/Golang/Interview/">Interview</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>November</span>
+            <span>25,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">Go 语言中的 make 函数</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>某一天在阅读公众号时，遇到了这样一道问题：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 以下代码输出什么？</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    m1 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">bool</span>, <span class="number">3</span>)</span><br><span class="line">    m2 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">bool</span>)</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%d %d&quot;</span>, <span class="built_in">len</span>(m1), <span class="built_in">len</span>(m2))</span><br><span class="line">    m1[<span class="string">&quot;a&quot;</span>] = <span class="literal">true</span></span><br><span class="line">    m2[<span class="string">&quot;a&quot;</span>] = <span class="literal">true</span></span><br><span class="line">    m1[<span class="string">&quot;b&quot;</span>] = <span class="literal">true</span></span><br><span class="line">    m2[<span class="string">&quot;b&quot;</span>] = <span class="literal">true</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%d %d&quot;</span>, <span class="built_in">len</span>(m1), <span class="built_in">len</span>(m2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>答案是 <code>0 0</code> 和 <code>2 2</code>。</p>
+<h2 id="make-函数对不同数据类型的作用"><a href="#make-函数对不同数据类型的作用" class="headerlink" title="make() 函数对不同数据类型的作用"></a>make() 函数对不同数据类型的作用</h2><p>这道问题涉及到了关于 <code>make</code> 函数的一个知识点：<code>make</code> 函数用于初始化某些数据类型时，其参数具有哪些意义？<br>首先，<code>make</code> 函数可以用于初始化三种数据类型：<code>slice</code>、<code>map</code>、<code>channel</code>。我们比较熟悉的用法一般是用于在初始化 <code>slice</code> 的时候指定长度（例如 <code>make([]int, 10)</code> 可以初始化一个初始长度为 10 的 <code>int</code> 类型切片）和在初始化 <code>channel</code> 的时候指定该 <code>channel</code> 有无缓冲（例如 <code>make(chan int, 1)</code> 可以初始化一个缓冲区大小为 1 的 <code>int</code> 类型的 <code>channel</code>）。<br>但是一般情况下，当 <code>make</code> 用于初始化 <code>map</code> 时，一般都只有类型这一个参数，例如 <code>make(map[int]bool)</code>。那么第二个参数对于 <code>map</code> 来说意味着什么呢？<br>下面这张表格会告诉我们答案：</p>
+<table>
+<thead>
+<tr>
+<th>调用方式</th>
+<th>参数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>make(T, len)</td>
+<td>slice</td>
+<td>初始化一个长度为 len，容量为 cap 的 slice</td>
+</tr>
+<tr>
+<td>make(T, len, cap)</td>
+<td>slice</td>
+<td>初始化一个长度为 len 的 slice</td>
+</tr>
+<tr>
+<td>make(T)</td>
+<td>map</td>
+<td>初始化一个 map</td>
+</tr>
+<tr>
+<td>make(T, cap)</td>
+<td>map</td>
+<td>初始化一个容量<strong>大约</strong>为 cap 的 map</td>
+</tr>
+<tr>
+<td>make(T)</td>
+<td>channel</td>
+<td>初始化一个无缓冲的 channel</td>
+</tr>
+<tr>
+<td>make(T, cap)</td>
+<td>channel</td>
+<td>初始化一个缓冲区大小为 cap 的 channel</td>
+</tr>
+</tbody></table>
+<p>因此，上面那道题目的答案就显而易见了：<code>len</code> 返回的是 <code>map</code> 中键值对的个数，而 <code>make(map[int]bool, 3)</code> 初始化了一个长度为 0、容量为 3 的 <code>map</code>，其初始长度自然就是 0 了。</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Noelle Mu, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Golang/" class="tag">#Golang</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/03ea9547f4e6/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">死锁产生的条件及预防方法</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/0c4bcffb0ac5/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Go 语言中空结构体 struct{} 的作用</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="noellemu/site_giscus" data-repo-id="R_kgDOIYJz1w" data-category="Announcements" data-category-id="DIC_kwDOIYJz184CSY68" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h4 class="title">Site</h4>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/" class="item">Home</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+            </div>
+            
+            <div class="group">
+                <h4 class="title">Projects</h4>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/noellemu/testify" class="item">Testify (A distributed monitoring system)</a>
+                
+                <a href="" class="item">Kopi (TODO) (A framework for building distributed systems)</a>
+                
+                <a href="" class="item">Metropolitan (TODO) (An ops script execution and management system)</a>
+                
+            </div>
+            
+            <div class="group">
+                <h4 class="title">Me</h4>
+                
+                <a href="mailto:noellemu.dev@outlook.com" class="item">Email</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/noellemu" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://t.me/noellemu" class="item">Telegram</a>
+                
+                <a target="_blank" rel="noopener" href="https://twitter.com/noellemu_dev" class="item">Twitter</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2022 Noelle Mu<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
