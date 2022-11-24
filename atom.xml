@@ -6,7 +6,7 @@
   <link href="http://site.noellemu.cloud/atom.xml" rel="self"/>
   
   <link href="http://site.noellemu.cloud/"/>
-  <updated>2022-11-24T17:59:47.720Z</updated>
+  <updated>2022-11-24T19:14:10.670Z</updated>
   <id>http://site.noellemu.cloud/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>记一次缓存引起的数据异常 Bug 的排查过程</title>
+    <link href="http://site.noellemu.cloud/8f438e4dddfd/"/>
+    <id>http://site.noellemu.cloud/8f438e4dddfd/</id>
+    <published>2022-11-24T18:10:54.000Z</published>
+    <updated>2022-11-24T19:14:10.670Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在我工作中开发的一个类似于 <code>Ansible</code> 和 <code>蓝鲸作业平台</code> 的作业平台中，由于 <code>MongoDB</code> 性能瓶颈导致 <code>NSQ</code> 消息队列积压严重，经讨论后决定将作业执行过程中的作业状态转换、作业日志存储等逻辑从直接读写 <code>MongoDB</code> 重构为基于 <code>sync.Map</code> 自行实现的进程内缓存——将作业数据以作业 ID 为 <code>key</code>，作业数据为 <code>value</code> 保存在 <code>sync.Map</code> 中（这个方案并不怎么好，后文会提到优化方案），并且启动了几个定时任务将 <code>sync.Map</code> 中的数据每隔 10 秒对执行中的作业执行历史数据进行落库操作。作业中所有步骤的执行历史信息在作业执行开始或跳过失败步骤时写入缓存和数据库，此后会进入一个类似 <code>Event Loop</code> 的无限 <code>for</code> 循环，每次循环都会根据作业执行目标的数量和状态判断作业的状态，若已成功结束（成功目标总数 <code>Succeed</code> &#x3D; 执行目标总数 <code>Total</code>）则会立即发送下一个步骤给执行目标。</p><p>这样一来，业务逻辑就发生了变化：</p><ul><li>优化前：作业执行消息到来 - 从 DB 中加载作业执行历史数据（主要是成功 &#x2F; 失败 &#x2F; 执行中三种状态的主机数量、重做次数等） - 根据执行历史数据和消息内容判断作业的状态 - 将状态和日志信息写入 DB。</li><li>优化后：作业执行消息到来 - 从缓存中加载作业执行历史数据（未命中缓存则查 DB）- 根据消息内容判断作业的状态 - 将状态和日志信息写入缓存 - 通过定时任务将作业执行历史信息落库（如果作业执行已经结束，则立即落库，降低资源消耗）。</li></ul><p>显而易见的是，这种机制是 <code>Cache Aside</code>（先查缓存，缓存未命中则查数据库，修改时先写 DB 再写缓存）和 <code>Read Through / Write Behind</code>（写操作直接写缓存，然后由定时任务同步到 DB） 的结合体。</p><p>但在某一天，出现了一个诡异的 Bug：当作业的第一个步骤执行失败时，对这个步骤执行跳过操作，之后的所有步骤都会不经执行而直接被设为成功。若查看作业执行历史，会发现步骤实际上执行了，日志也成功返回到服务端。此外，该 Bug 是随机发生的，在触发条件未知的情况下无法 100% 复现。</p><h2 id="问题表现"><a href="#问题表现" class="headerlink" title="问题表现"></a>问题表现</h2><ul><li>该 Bug 是随机发生的，在不知晓原因的情况下无法 100% 复现。</li><li>必须有一个步骤（可以是第一步、第二步……第 n 步）失败并且对这个步骤执行跳过操作才有可能发生。</li><li>从作业执行开始到执行跳过操作的时间间隔非常短，最多 9 秒左右。</li></ul><h2 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h2><p>首先拉取 Bug 发生时的日志，会发现被错误地设为成功的步骤的执行目标总数 <code>Total</code> 在缓存中被错误地设置为 0，且对应步骤在作业执行开始第一次写入缓存时 <code>Total</code> 是正确的，而在执行跳过操作以后第一次被写入缓存时 <code>Total</code> 就被设为 0，怀疑是缓存 Bug，但对所有写缓存的操作进行查看和打日志之后，未发现有某处修改了 <code>Total</code> 操作或未设置 <code>Total</code> 值。</p><p>然后尝试复现，在测试了超过 100 次之后，发现可以复现问题的时间似乎与缓存落库定时任务的执行时间有关——例如缓存定时任务每 10 秒运行一次，第一次运行的时间为 yy:yy:y3，那么作业开始执行的时间必须在 xx:xx:x3 到 xx:xx:(x-1)3 之间，且必须在 xx:xx:(x-1)3 之前对某一执行失败的步骤执行跳过操作，否则就无法复现，怀疑是某处对 <code>Total</code> 值写了缓存但没有写 DB。</p><p>查看步骤跳过的逻辑，发现 <code>Total</code> 值只写了缓存，没有写数据库，问题实锤。</p><p>排查和修复过程大约花费一天半，几乎全程独立完成。</p><h2 id="根本原因"><a href="#根本原因" class="headerlink" title="根本原因"></a>根本原因</h2><p>在作业执行开始，创建所有步骤的执行历史信息并写入缓存和数据库时，执行主机数量 <code>Total</code> 字段只写入了缓存，没有写入数据库，导致所有步骤在数据库中储存的 <code>Total</code> 字段被初始化为 <code>int</code> 类型的零值（0）。若第一个步骤在 10 秒内执行完毕并点击跳过，由于跳过操作与执行失败这两个事件之间可能相隔很久，为了防止缓存失效，在每次跳过操作时都会直接查询数据库。此时若缓存落库定时任务还没有执行，查询操作就会将这个错误的 <code>Total: 0</code> 查询出来并覆盖缓存中正确的值。由于此时 <code>Succeed</code>、<code>Failed</code>、<code>Total</code> 三个字段都等于 0，所以在 <code>for</code> 循环中虽然会将作业执行信息发送给执行目标，但执行状态在状态判断逻辑中会被直接判断为成功，进而导致了问题的产生。</p><p>当从作业开始执行的时间（设为 <code>tstart</code>）到对失败步骤执行跳过的时间（设为 <code>tend</code>）大于 <code>tstart</code> 之后缓存落库定时任务下一次执行的时间与 <code>tstart</code> 的间隔（设为 <code>ttask</code>），即 <code>tend - tstart &gt; ttask</code> 时，缓存落库定时任务执行过一次之后，由于缓存中正确的 <code>Total</code> 值已经被写入数据库，查询操作读取到的就是正确的值，问题也就不会发生了。</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ol><li>在作业执行开始时，将主机数量同时写入数据库和缓存，而不是只写缓存不写数据库。</li><li>对于失败步骤的跳过操作，应直接查缓存，未命中缓存再查询数据库，而不是直接查询数据库。</li><li>提高缓存落库定时任务的执行频率，降低问题发生的概率（当然这并不能从根本上解决问题）。</li></ol><h2 id="缓存功能的优化方案"><a href="#缓存功能的优化方案" class="headerlink" title="缓存功能的优化方案"></a>缓存功能的优化方案</h2><ol><li>不使用 <code>sync.Map</code> 而是使用功能更加完备的进程内缓存框架（如 <code>gcache</code> 等）。</li><li>可以只缓存与作业状态判断和日志更新相关的小部分数据（如作业 ID、作业的当前状态、重做次数）等，日志则写入消息队列并异步写入数据库（削峰填谷），降低内存占用。</li><li>若考虑多点部署的问题，由于有进程内缓存意味着作业服务是有状态的，所以需要采用一致性哈希等机制将不同的作业 ID 映射到不同的作业服务实例上去，或者采用单独的缓存数据库实现跨进程的缓存（如 <code>Redis</code> 等）。</li><li>日志不应该直接写到作业执行历史的某个数组类型的字段（如 <code>logs</code>）中，而应该写到专门的日志数据库（如 <code>ElasticSearch</code>）中，这不仅仅是因为这些数据库对海量数据的查询操作具有天然的优势，更可以将查询执行历史元数据和查询日志数据的操作分开，提升系统的性能（这一点考虑之后结合 <code>Metropolitan</code> 写篇文章讲讲）。</li><li>现有的缓存机制在进程 <code>panic</code> 异常退出时会导致未落库的数据（执行中的作业执行历史数据）丢失，需要特别注意在 <code>recover</code> 兜底中将数据落库（怀疑之后数次日志丢失 &#x2F; 作业状态判断不正确的偶现 bug 可能由此引起）。</li></ol><h2 id="附：缓存读写的业界推荐原则"><a href="#附：缓存读写的业界推荐原则" class="headerlink" title="附：缓存读写的业界推荐原则"></a>附：缓存读写的业界推荐原则</h2><ul><li>增：先写 DB，再写缓存。</li><li>删：先删 DB，再删缓存（并发的情况下可能会读到脏数据，但概率比较小）。</li><li>改：先写 DB，再写缓存（同样可能有脏数据问题）。</li><li>查：先查缓存，未查到则查 DB，并把查到的数据同步到缓存。</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;在我工作中开发的一个类似于 &lt;code&gt;Ansible&lt;/code&gt; 和 &lt;code&gt;蓝鲸作业平台&lt;/code&gt; 的作业平台中，由于 &lt;co</summary>
+      
+    
+    
+    
+    <category term="Golang" scheme="http://site.noellemu.cloud/categories/Golang/"/>
+    
+    <category term="Trouble Shooting" scheme="http://site.noellemu.cloud/categories/Golang/Trouble-Shooting/"/>
+    
+    
+    <category term="Golang" scheme="http://site.noellemu.cloud/tags/Golang/"/>
+    
+    <category term="Cache" scheme="http://site.noellemu.cloud/tags/Cache/"/>
+    
+    <category term="Trouble Shooting" scheme="http://site.noellemu.cloud/tags/Trouble-Shooting/"/>
+    
+  </entry>
   
   <entry>
     <title>Go 语言中的 defer</title>
