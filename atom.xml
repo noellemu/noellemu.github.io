@@ -6,7 +6,7 @@
   <link href="http://site.noellemu.cloud/atom.xml" rel="self"/>
   
   <link href="http://site.noellemu.cloud/"/>
-  <updated>2022-11-24T16:28:41.322Z</updated>
+  <updated>2022-11-24T17:59:47.720Z</updated>
   <id>http://site.noellemu.cloud/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go 语言中的 defer</title>
+    <link href="http://site.noellemu.cloud/24a2480bc47a/"/>
+    <id>http://site.noellemu.cloud/24a2480bc47a/</id>
+    <published>2022-11-24T16:30:21.000Z</published>
+    <updated>2022-11-24T17:59:47.720Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="defer-的作用"><a href="#defer-的作用" class="headerlink" title="defer 的作用"></a>defer 的作用</h2><p><code>defer</code> 是 Go 语言提供的一种延迟执行的机制，可以让函数或者语句在当前函数返回（<code>panic</code> 或者 <code>return</code>）之后执行，且在 <code>panic</code> 之后仍然有效，也就是先 <code>return</code> &#x2F; <code>panic</code>，后 <code>defer</code>。</p><p><code>defer</code> 常见的用法是关闭文件、关闭连接、释放资源等，但也可以用来执行一些在不知道是否会 <code>panic</code> 的情况下必须执行的操作。比如在项目中，有一个向服务端汇报执行日志的函数 <code>SendMsg()</code>，并且在汇报日志之前需要先做一些处理（例如将日志写到文件中等），在发生丢日志的操作之后发现这些处理逻辑可能产生 <code>panic</code>，这时候就可以使用 <code>defer</code> 来完成汇报日志的操作，确保无论处理逻辑是否 <code>panic</code>，日志都会被正常地上报。</p><p>此外，使用 <code>defer</code> 配合 <code>recover</code> 进行 <code>panic</code> 兜底并完成一些“收尾操作”（如关闭连接、关闭文件等）也是很常见的操作（实际上 <code>recover</code> 在正常情况下只能配合 <code>defer</code> 和匿名函数一起使用，直接执行只会返回 <code>nil</code>）。例如：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> err := <span class="built_in">recover</span>(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="comment">// handle error</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure><h2 id="defer-的执行顺序"><a href="#defer-的执行顺序" class="headerlink" title="defer 的执行顺序"></a>defer 的执行顺序</h2><p><code>defer</code> 遵循栈“先进后出”的特点，也就是先定义的 <code>defer</code> 后执行。</p><h2 id="defer-的参数"><a href="#defer-的参数" class="headerlink" title="defer 的参数"></a>defer 的参数</h2><p><code>defer</code> 的函数参数会在 <code>defer</code> 定义时被保存下来，如果是值类型的参数，则 <code>defer</code> 实际执行时与 <code>defer</code> 定义时一致；如果是引用类型的参数，则不一定一致（因为指针指向的内容可能会被修改）。</p><p>也就是说，如果 <code>defer</code> 后跟的语句不是闭包（匿名函数），那么在 <code>defer</code> 在定义时，参数就已经确定了。如果是闭包，则会在实际执行时根据闭包的上下文来确定。</p><p>因此，如果 <code>defer</code> 的参数中含有函数调用，那么在 <code>defer</code> 定义处需要先执行这个函数以获取 <code>defer</code> 函数的参数，之后 <code>defer</code> 会正常执行。</p><p>有时候我们可以利用这样的特性确保 <code>defer</code> 可以做正确的事情，例如一个进程要循环发起多个网络请求并获取响应，我们就可以利用 <code>defer</code> 的特点确保所有的响应体都被正确关闭，例如：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, url := <span class="keyword">range</span> urls &#123;</span><br><span class="line">    resp, err := http.Get(url)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这里由于 <code>resp.Body.Close()</code> 不是闭包，所以在 <code>defer</code> 语句处 <code>resp.Body</code> 的值已经确定并且被缓存下来，函数返回后实际执行 <code>defer</code> 时就不会出现错误了。</p><h2 id="defer-遇上-panic"><a href="#defer-遇上-panic" class="headerlink" title="defer 遇上 panic"></a>defer 遇上 panic</h2><p><code>defer</code> 遇上 <code>panic</code> 可以分以下几种情况讨论：</p><ol><li>如果 <code>defer</code> 执行的函数是 <code>nil</code>，则会引发 <code>panic</code>。</li><li>当函数发生 <code>panic</code> 时，会开始遍历 <code>defer</code> 链表，按照先进后出的顺序执行 <code>defer</code>，此时每个 <code>defer</code> 都可以捕获到 <code>panic</code>。</li><li>遇到前文提到的 <code>recover</code> “兜底”代码时，<code>panic</code> 会被捕获，之后所有的 <code>defer</code> 都无法捕获 <code>panic</code>。</li><li>如果 <code>defer</code> 栈中有多个 <code>panic</code>，则后面触发的 <code>panic</code> 会覆盖掉前面触发的 <code>panic</code>，最终仅有最后一个 <code>panic</code> 被 <code>recover</code> 捕获。</li><li>如果遍历完 <code>defer</code> 链表都没有遇上 <code>recover</code>，则向 <code>stderr</code> 抛出 <code>panic</code> 信息，并结束进程。</li></ol><h2 id="使用-defer-修改函数的返回值"><a href="#使用-defer-修改函数的返回值" class="headerlink" title="使用 defer 修改函数的返回值"></a>使用 defer 修改函数的返回值</h2><p>由于 Go 语言中的函数返回值是可以命名的，这些命名的返回值会在函数开始时被初始化为对应类型的零值，作用域为整个函数（包括 <code>defer</code>），因此可以使用 <code>defer</code> 修改这些返回值。例如：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(doSomething())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doSomething</span><span class="params">()</span></span> (retValue <span class="type">int</span>) &#123;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        retValue++</span><br><span class="line">    &#125;()</span><br><span class="line">    retValue = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;defer-的作用&quot;&gt;&lt;a href=&quot;#defer-的作用&quot; class=&quot;headerlink&quot; title=&quot;defer 的作用&quot;&gt;&lt;/a&gt;defer 的作用&lt;/h2&gt;&lt;p&gt;&lt;code&gt;defer&lt;/code&gt; 是 Go 语言提供的一种延迟执行的机制，可以让</summary>
+      
+    
+    
+    
+    <category term="Golang" scheme="http://site.noellemu.cloud/categories/Golang/"/>
+    
+    <category term="Interview" scheme="http://site.noellemu.cloud/categories/Golang/Interview/"/>
+    
+    
+    <category term="Golang" scheme="http://site.noellemu.cloud/tags/Golang/"/>
+    
+  </entry>
   
   <entry>
     <title>死锁产生的条件及预防方法</title>
