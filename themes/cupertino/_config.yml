@@ -58,6 +58,7 @@ nav:
   # the items displays in the upper right corner
   items:
     # these items will display as a link
+    Resume: /resume
     About: /about
     Archives: /archives
     Categories: /categories
@@ -84,7 +85,7 @@ footer:
     Home: /
     Search: /search
     # Projects: /projects
-    # Resume: /resume
+    Resume: /resume
     RSS: /atom.xml
     Tags: /tags
   # also the title
