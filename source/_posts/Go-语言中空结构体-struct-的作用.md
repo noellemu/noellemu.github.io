@@ -3,6 +3,9 @@ title: Go 语言中空结构体 struct{} 的作用
 date: 2022-11-24 12:26:17
 tags:
 - Golang
+categories:
+- Golang
+- Interview
 ---
 
 ## struct{} 的特性
