@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="never">
+  
+  <title>【Testify 列传】01-我想做一个什么样的监控系统？ - Noelle Mu | SRE | Open Source</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="【Testify 列传】01-我想做一个什么样的监控系统？ - Noelle Mu | SRE | Open Source" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://site.noellemu.cloud/2504d68c257c/index.html" />
+  
+  <meta property="og:image" content="/favicon.ico" />
+  
+  <meta property="og:article:published_time" content="2022-11-04T19:21:58.000Z" />
+  
+  <meta property="og:article:author" content="Noelle Mu" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Noelle Mu</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/resume">Resume</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/tags">Tags</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/noellemu" target="_blank">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/Testify/">Testify</a>
+        
+            <a href="/categories/Testify/Open-Source/">Open Source</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>November</span>
+            <span>5,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">【Testify 列传】01-我想做一个什么样的监控系统？</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <blockquote>
+<p><strong>Testify</strong><br>v. 证明；证实；（尤指出庭）作证；见证（上帝的存在）<br>作为监控系统，Testify 能证实系统中存在的问题；同时作为我的毕业设计项目 Divino 的改进项目，Testify 可以说是见证了我的成长。</p>
+</blockquote>
+<h2 id="为什么要做监控系统？"><a href="#为什么要做监控系统？" class="headerlink" title="为什么要做监控系统？"></a>为什么要做监控系统？</h2><p>我的本科毕业设计就做了一个监控系统，名为“Divino”，可惜由于时间紧迫加上不了解监控系统的生态，这个项目十分草率地结束了，开源的计划也泡汤了。</p>
+<p>但是随着我对 SRE、运维开发、基础架构的研究不断深入，我发现监控系统其实是运维工具中最不可少的工具之一，并且自己也十分需要一个趁手好用的监控系统。</p>
+<p>翻看了市面上的一些企业级监控解决方案之后，我却发现它们其实是给已经很成熟的监控系统（如 <code>Prometheus</code>、<code>VictoriaMetrics</code> 等）套了一层皮，仅仅是实现了一些提高用户体验等方面的业务需求，并没有触及到监控系统最核心的部分，开发定制能力比较差。并且其中有部分还是商业软件，开源版本没有全部功能。再加上重构 <code>Divino</code> 势在必行，那么 <code>Testify</code> 的定位就十分明确了——<code>Testify</code> 是一个基于 <code>TSDB</code> 的极简主义的高可扩展性的监控系统。</p>
+<h2 id="如何理解“极简主义”？"><a href="#如何理解“极简主义”？" class="headerlink" title="如何理解“极简主义”？"></a>如何理解“极简主义”？</h2><p>与 <code>Metropolitan</code> 一样，<code>Testify</code> 其实仅仅是实现了一些最简单的功能，可以满足中小规模场景下的应用。由于每个公司都有每个公司的业务特点和二次开发能力，因此 <code>Testify</code> 应该具有很强的扩展性和二次开发能力，满足不同业务规模下的直接使用和二次开发的需求。</p>
+<h2 id="Testify-的架构和技术栈"><a href="#Testify-的架构和技术栈" class="headerlink" title="Testify 的架构和技术栈"></a>Testify 的架构和技术栈</h2><p><code>Testify</code> 采用分布式架构，分为两个模块：<code>Testify-API</code> 和 <code>Testify-Server</code>。其中 <code>Testify-API</code> 是一个无状态的 <code>RESTful API</code> 服务，用于管理 <code>Testify</code>、查看监控历史数据等；<code>Testify-Server</code> 则提供了有状态的告警判断、数据转换等服务，若有多种数据源，则一种 <code>TSDB</code> 就对应一种 <code>Testify-Server</code>。这样的架构设计是为了考虑到扩展性和性能——毕竟我想让 <code>Testify</code> 成为一个能在不同规模的业务场景中都适用的监控系统，高资源消耗的 <code>Testify-Server</code> 和低资源消耗的 <code>Testify-API</code> 分开也能尽量确保两者不会互相争夺资源。二者间可以直接配置对方的地址，也可以通过服务发现的方式进行动态发现。</p>
+<p><code>Testify</code> 同时支持 <code>Push</code> 和 <code>Pull</code> 两种模式，并且兼容 <code>Prometheus</code> 和 <code>OpenTelemetry</code>，这样做的目的是为了尽可能地提高 <code>Testify</code> 的使用场景，并且让业务能够尽量无缝地迁移到 <code>Testify</code>。</p>
+<p>前端：</p>
+<ul>
+<li><p>前端框架：React</p>
+</li>
+<li><p>UI 框架：Ant Design</p>
+</li>
+<li><p>数据可视化框架：D3 或 AntV 或 ECharts 等（未定）</p>
+</li>
+</ul>
+<p>后端：</p>
+<ul>
+<li><p>Web 框架：Gin</p>
+</li>
+<li><p>RPC 框架：RPCX（可定制）</p>
+</li>
+<li><p>数据库：MongoDB（可定制）</p>
+</li>
+<li><p>TSDB：InfluxDB（可定制）</p>
+</li>
+</ul>
+<h2 id="Testify-的特色功能"><a href="#Testify-的特色功能" class="headerlink" title="Testify 的特色功能"></a>Testify 的特色功能</h2><h3 id="同时支持-Push-和-Pull"><a href="#同时支持-Push-和-Pull" class="headerlink" title="同时支持 Push 和 Pull"></a>同时支持 Push 和 Pull</h3><p>同时支持 <code>Push</code> 和 <code>Pull</code> 两种模式的监控系统可不常见，而同时支持两种模式的好处就是用户可以根据自己的业务场景选择合适的数据采集模式。</p>
+<h3 id="可以任意更换数据库和-TSDB"><a href="#可以任意更换数据库和-TSDB" class="headerlink" title="可以任意更换数据库和 TSDB"></a>可以任意更换数据库和 TSDB</h3><p><code>Testify</code> 在设计时就充分考虑到了扩展性，虽然默认使用 <code>InfluxDB</code>，但是用户和项目参与者可以根据自己的需要和实际情况来二次开发，适配其他的 TSDB。</p>
+<h3 id="Client-SDK-和自定义的接入层"><a href="#Client-SDK-和自定义的接入层" class="headerlink" title="Client SDK 和自定义的接入层"></a>Client SDK 和自定义的接入层</h3><p>虽然 <code>Testify</code> 默认提供了 <code>HTTP API</code>，但在企业内部，监控系统与其他系统之间相互调用也是很常见的需求。为此，<code>Testify</code> 与 <code>Metropolitan</code> 一样提供了 <code>Client SDK</code> 供用户方便地调用 <code>Testify</code> 的各项功能，同时 <code>Testify</code> 还支持用户自行开发自己的接入方式，如 <code>gRPC</code> 等。</p>
+<h3 id="部署方便"><a href="#部署方便" class="headerlink" title="部署方便"></a>部署方便</h3><p>服务端只有两个核心组件的 <code>Testify</code> 相比某些微服务架构的监控系统更容易部署，在运行时占用的资源也更小，更利于小规模场景使用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/noellemu/testify">Testify</a></p>
+<p>欢迎大家来 Testify 的仓库逛逛，虽然目前什么都没有，但是以后随着基本功能慢慢成型，代码也会逐渐发布到仓库中，欢迎大家参与 Testify 项目，也希望大家可以给个 Star 或者 Fork，非常感谢～</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Noelle Mu, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Open-Source/" class="tag">#Open Source</a><a href="/tags/Testify/" class="tag">#Testify</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/f46e6cebc106/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">一文看懂 Web 后端开发</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a class="prev"></a>
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="noellemu/site_giscus" data-repo-id="R_kgDOIYJz1w" data-category="Announcements" data-category-id="DIC_kwDOIYJz184CSY68" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h4 class="title">Site</h4>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/" class="item">Home</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+            </div>
+            
+            <div class="group">
+                <h4 class="title">Projects</h4>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/noellemu/testify" class="item">Testify (A distributed monitoring system)</a>
+                
+                <a href="" class="item">Kopi (TODO) (A framework for building distributed systems)</a>
+                
+                <a href="" class="item">Metropolitan (TODO) (An ops script execution and management system)</a>
+                
+            </div>
+            
+            <div class="group">
+                <h4 class="title">Me</h4>
+                
+                <a href="mailto:noellemu.dev@outlook.com" class="item">Email</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/noellemu" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://t.me/noellemu" class="item">Telegram</a>
+                
+                <a target="_blank" rel="noopener" href="https://twitter.com/noellemu_dev" class="item">Twitter</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2022 Noelle Mu<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

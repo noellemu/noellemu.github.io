@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <meta name="referrer" content="never">
   
-  <title>Tags - Noelle Mu | SRE | Open Source</title>
+  <title>【LeetCode HOT 100】1. Two Sum - Noelle Mu | SRE | Open Source</title>
   
     <link rel="shortcut icon" href="/favicon.ico">
   
@@ -17,13 +17,17 @@
   
   
   
-  <meta property="og:title" content="Tags - Noelle Mu | SRE | Open Source" />
+  <meta property="og:title" content="【LeetCode HOT 100】1. Two Sum - Noelle Mu | SRE | Open Source" />
   
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="article" />
   
-  <meta property="og:url" content="http://site.noellemu.cloud/tags/index.html" />
+  <meta property="og:url" content="http://site.noellemu.cloud/2e76cd4c5980/index.html" />
   
   <meta property="og:image" content="/favicon.ico" />
+  
+  <meta property="og:article:published_time" content="2022-11-25T12:00:04.000Z" />
+  
+  <meta property="og:article:author" content="Noelle Mu" />
   
   
 
@@ -73,14 +77,6 @@
   
   
   
-<link rel="stylesheet" href="/css/archive.css">
-
-  
-  
-  
-  
-<link rel="stylesheet" href="/css/tags.css">
-
   
   
 
@@ -140,16 +136,88 @@
     </div>
 </nav>
         
-    <div class="container">
+<article class="post">
     <div class="meta">
-        <h2 class="title">Tags</h2>
-    </div>
-    <div class="divider"></div>
-    <div class="tags">
         
-        <a href="/tags/Golang/" class="tag">#Golang</a><a href="/tags/Windows/" class="tag">#Windows</a><a href="/tags/Go/" class="tag">#Go</a><a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Hash-Map/" class="tag">#Hash Map</a><a href="/tags/Two-Pointers/" class="tag">#Two Pointers</a><a href="/tags/Linked-List/" class="tag">#Linked List</a><a href="/tags/Sliding-Window-Algorithm/" class="tag">#Sliding Window Algorithm</a><a href="/tags/Dynamic-Programming-DP/" class="tag">#Dynamic Programming (DP)</a><a href="/tags/Metropolitan/" class="tag">#Metropolitan</a><a href="/tags/Open-Source/" class="tag">#Open Source</a><a href="/tags/Testify/" class="tag">#Testify</a><a href="/tags/Back-end-Development/" class="tag">#Back-end Development</a><a href="/tags/Tutorial/" class="tag">#Tutorial</a><a href="/tags/Off-topic/" class="tag">#Off topic</a><a href="/tags/Operating-System/" class="tag">#Operating System</a><a href="/tags/Cache/" class="tag">#Cache</a><a href="/tags/Trouble-Shooting/" class="tag">#Trouble Shooting</a>
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/Algorithm/">Algorithm</a>
+        
+            <a href="/categories/Algorithm/LeetCode/">LeetCode</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>November</span>
+            <span>25,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">【LeetCode HOT 100】1. Two Sum</h2>
     </div>
-</div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/">1. Two Sum</a></p>
+<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>这道题也是老熟人了，我感觉我至少做过五遍。</p>
+<p>暴力解法（时间复杂度 <code>O(n^2)</code>）大家应该都知道，那就来讲讲非暴力解法吧。</p>
+<p>我们可以用一个哈希表 <code>m</code> 保存 <code>nums</code> 中的元素与下标的对应关系，由于一个数字只能使用一次，因此我们遍历 <code>nums</code> 数组，每次都查找 <code>target</code> 与当前元素 <code>num</code> 的差值是否在哈希表中。如果在，则说明 <code>m[target-num] + num = target</code>，返回 <code>m[target-num]</code> 和 <code>num</code> 的下标 <code>i1</code>；如果不在，则将 <code>num</code> 及其下标添加到哈希表中（即 <code>m[num] = i1</code>）。</p>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要遍历一次数组。</p>
+<p>空间复杂度：O(n)，哈希表占用的内存空间与 <code>nums</code> 的长度相关。</p>
+<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">twoSum</span><span class="params">(nums []<span class="type">int</span>, target <span class="type">int</span>)</span></span> []<span class="type">int</span> &#123;</span><br><span class="line">     m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">int</span>]<span class="type">int</span>)</span><br><span class="line">    <span class="keyword">for</span> i, num := <span class="keyword">range</span> nums &#123;</span><br><span class="line">        <span class="keyword">if</span> i1, ok := m[target-num]; !ok &#123;</span><br><span class="line">            m[num] = i</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> []<span class="type">int</span>&#123;i1, i&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> []<span class="type">int</span>&#123;<span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Noelle Mu, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Hash-Map/" class="tag">#Hash Map</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/f37957f67304/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">【LeetCode HOT 100】2. Add Two Numbers</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/8f438e4dddfd/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">记一次缓存引起的数据异常 Bug 的排查过程</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="noellemu/site_giscus" data-repo-id="R_kgDOIYJz1w" data-category="Announcements" data-category-id="DIC_kwDOIYJz184CSY68" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async> </script>
+        
+    
+</article>
 
         <footer>
     <div class="inner">

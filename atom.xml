@@ -6,7 +6,7 @@
   <link href="http://site.noellemu.cloud/atom.xml" rel="self"/>
   
   <link href="http://site.noellemu.cloud/"/>
-  <updated>2022-11-24T19:19:00.075Z</updated>
+  <updated>2022-11-25T14:50:04.343Z</updated>
   <id>http://site.noellemu.cloud/</id>
   
   <author>
@@ -15,6 +15,178 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【LeetCode HOT 100】19. Remove Nth Node From End of List</title>
+    <link href="http://site.noellemu.cloud/554b45c19de4/"/>
+    <id>http://site.noellemu.cloud/554b45c19de4/</id>
+    <published>2022-11-25T14:34:53.000Z</published>
+    <updated>2022-11-25T14:50:04.343Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></p><h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>看到链表第一反应：双指针。</p><p>求链表长度等比较简单的方法就不讲了，这里讲一下最优解（双指针）。</p><p>这道题如果是一个有头结点的链表，那么能简化很多代码，我们可以给链表手动添加一个头结点 <code>dummy</code>。初始情况下快指针 <code>f</code> 指向第一个结点 <code>head</code>，慢指针 <code>s</code> 指向头结点 <code>dummy</code>。由于需要求倒数第 n 个结点，那么可以让快指针 <code>f</code> 先走 n 步，然后快慢指针一起走，直到 <code>f</code> 越界为止，此时 <code>s</code> 指向的就是倒数第 <code>n</code> 个结点的前一个结点，直接把 <code>s</code> 的下一个结点从链表中摘除（<code>s.Next = s.Next.Next</code>）即可。注意最后需要返回 <code>dummy.Next</code>，否则链表中只有一个结点的情况会 WA（也可以使用 <code>head.Next == nil</code> 特殊判断一下）。</p><h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要完整遍历一次链表。</p><p>空间复杂度：O(1)，只使用了常数个数的存储空间。</p><h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeNthFromEnd</span><span class="params">(head *ListNode, n <span class="type">int</span>)</span></span> *ListNode &#123;</span><br><span class="line">    dummy := &amp;ListNode&#123;Val: <span class="number">-1</span>, Next: head&#125;</span><br><span class="line">    f, s := head, dummy</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> f != <span class="literal">nil</span> &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">        s = s.Next</span><br><span class="line">    &#125;</span><br><span class="line">    s.Next = s.Next.Next</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dummy.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题目地址&quot;&gt;&lt;a href=&quot;#题目地址&quot; class=&quot;headerlink&quot; title=&quot;题目地址&quot;&gt;&lt;/a&gt;题目地址&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/remove-nth-node-from-end</summary>
+      
+    
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/categories/Algorithm/"/>
+    
+    <category term="LeetCode" scheme="http://site.noellemu.cloud/categories/Algorithm/LeetCode/"/>
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/tags/Algorithm/"/>
+    
+    <category term="Two Pointers" scheme="http://site.noellemu.cloud/tags/Two-Pointers/"/>
+    
+    <category term="Linked List" scheme="http://site.noellemu.cloud/tags/Linked-List/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【LeetCode HOT 100】11. Container With Most Water</title>
+    <link href="http://site.noellemu.cloud/4b76ec1a08c6/"/>
+    <id>http://site.noellemu.cloud/4b76ec1a08c6/</id>
+    <published>2022-11-25T13:45:39.000Z</published>
+    <updated>2022-11-25T14:48:18.251Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a href="https://leetcode.cn/problems/container-with-most-water/">11. Container With Most Water</a></p><h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>不难想到我们每次都需要向内移动两侧的板来计算可能达到的最大容量，并且在这个移动过程中维护最大容量，那么如何移动就成了一个问题。如果想让容量尽可能的大，那么我们就需要每次都移动两侧较短的板（如果长度相同的话则移动哪个都可以），直到容器的宽度为 0，这样问题就转换为了一个很简单的双指针问题。</p><p>个人认为其实这道题与其说是考察什么算法，不如说是一道博弈论的题目。</p><h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要遍历数组一次。</p><p>空间复杂度：O(1)，只使用了常数个数的存储空间。</p><h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxArea</span><span class="params">(height []<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    maxAmount := <span class="number">0</span></span><br><span class="line">    l, r := <span class="number">0</span>, <span class="built_in">len</span>(height)<span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span> l &lt; r &#123;</span><br><span class="line">        <span class="comment">// 求出两侧较短的板的高度</span></span><br><span class="line">        h := height[l]</span><br><span class="line">        <span class="keyword">if</span> height[l] &gt; height[r] &#123;</span><br><span class="line">            h = height[r]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 求出此时容器的容量，并维护最大容量</span></span><br><span class="line">        amount := (r - l) * h</span><br><span class="line">        <span class="keyword">if</span> amount &gt; maxAmount &#123;</span><br><span class="line">            maxAmount = amount</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 移动较短的一侧</span></span><br><span class="line">        <span class="keyword">if</span> height[l] &lt; height[r] &#123;</span><br><span class="line">            l++</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            r--</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> maxAmount</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题目地址&quot;&gt;&lt;a href=&quot;#题目地址&quot; class=&quot;headerlink&quot; title=&quot;题目地址&quot;&gt;&lt;/a&gt;题目地址&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/container-with-most-wate</summary>
+      
+    
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/categories/Algorithm/"/>
+    
+    <category term="LeetCode" scheme="http://site.noellemu.cloud/categories/Algorithm/LeetCode/"/>
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/tags/Algorithm/"/>
+    
+    <category term="Two Pointers" scheme="http://site.noellemu.cloud/tags/Two-Pointers/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【LeetCode HOT 100】5. Longest Palindromic Substring</title>
+    <link href="http://site.noellemu.cloud/015299e0586e/"/>
+    <id>http://site.noellemu.cloud/015299e0586e/</id>
+    <published>2022-11-25T13:25:03.000Z</published>
+    <updated>2022-11-25T14:49:00.451Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a href="https://leetcode.cn/problems/longest-palindromic-substring/">5. Longest Palindromic Substring</a></p><h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>这道题其实也是一道动态规划的题目，并且使用的是一种比较特殊的方法：中心扩展算法。</p><p>一个字符串是回文串的条件如下：</p><ol><li>串长为 1 时，该字符串是回文串。</li><li>串长为 2 时，如果该字符串的两个字符相同，则该字符串是回文串。</li><li>串长大于等于 3 时，如果该字符串去掉头尾两个字符仍然是回文串，那么该字符串是回文串。</li></ol><p>据此可以推导出状态转换方程：</p><ul><li><code>dp[i][i] = true</code></li><li><code>dp[i][i+1] = (s[i] == s[i+1])</code></li><li><code>dp[i][j] = dp[i+1][j-1] &amp;&amp; s[i] == s[j]</code></li></ul><p>根据状态转换方程可以得到表达式 <code>if s[i] == s[j] &amp;&amp; (j-i&lt;=2 || dp[i+1][j-1]) &#123; /* s[i][j] 是回文串 */ &#125;</code>，因为无论有几个字符，回文串的第一个字符和最后一个字符一定都是相同的（也就是 <code>s[l] == s[r]</code>），可以提出来当作公共条件。根据这个表达式依次计算并维护最长回文串的长度和边界即可。</p><h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n^2)，需要遍历数组 n ^ 2 次。</p><p>空间复杂度：O(n^2)，需要一个 n * n 的 DP 数组辅助计算。</p><h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">longestPalindrome</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(s) &lt; <span class="number">2</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> s</span><br><span class="line">    &#125;</span><br><span class="line">    n := <span class="built_in">len</span>(s)</span><br><span class="line">    maxL, maxR := <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    maxLen := <span class="number">0</span></span><br><span class="line">    <span class="comment">// 构造一个 n * n 的数组暂存结果</span></span><br><span class="line">    dp := <span class="built_in">make</span>([][]<span class="type">bool</span>, n)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">        dp[i] = <span class="built_in">make</span>([]<span class="type">bool</span>, n)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 初始状态：l = r 时，dp[l][r] = true</span></span><br><span class="line">    <span class="comment">// 状态转移方程：当 s[l] = s[r] 且 l - r &lt; 2（子串只有两个以下字符）或 dp[l+1][r-1] = true 时，dp[l][r] = true</span></span><br><span class="line">    <span class="keyword">for</span> r := <span class="number">1</span>; r &lt; <span class="built_in">len</span>(s); r++ &#123;</span><br><span class="line">        <span class="keyword">for</span> l := <span class="number">0</span>; l &lt; r; l++ &#123;</span><br><span class="line">            <span class="keyword">if</span> s[l] == s[r] &amp;&amp; (r-l&lt;=<span class="number">2</span> || dp[l+<span class="number">1</span>][r<span class="number">-1</span>]) &#123;</span><br><span class="line">                dp[l][r] = <span class="literal">true</span></span><br><span class="line">                <span class="keyword">if</span> r - l + <span class="number">1</span> &gt; maxLen &#123;</span><br><span class="line">                    maxLen = r - l + <span class="number">1</span></span><br><span class="line">                    maxL, maxR = l, r</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注意 Golang 的截取操作为左闭右开</span></span><br><span class="line">    <span class="keyword">return</span> s[maxL:maxR+<span class="number">1</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题目地址&quot;&gt;&lt;a href=&quot;#题目地址&quot; class=&quot;headerlink&quot; title=&quot;题目地址&quot;&gt;&lt;/a&gt;题目地址&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/longest-palindromic-subs</summary>
+      
+    
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/categories/Algorithm/"/>
+    
+    <category term="LeetCode" scheme="http://site.noellemu.cloud/categories/Algorithm/LeetCode/"/>
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/tags/Algorithm/"/>
+    
+    <category term="Dynamic Programming (DP)" scheme="http://site.noellemu.cloud/tags/Dynamic-Programming-DP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【LeetCode HOT 100】3. Longest Substring Without Repeating Characters</title>
+    <link href="http://site.noellemu.cloud/50d286f3428f/"/>
+    <id>http://site.noellemu.cloud/50d286f3428f/</id>
+    <published>2022-11-25T12:50:22.000Z</published>
+    <updated>2022-11-25T14:49:39.509Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/">3. Longest Substring Without Repeating Characters</a></p><h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>这道题可以说是滑窗的入门题了。</p><p>用 <code>l</code> 和 <code>r</code> 两个变量规定滑窗的左右两端，<code>l</code> 每次循环前进一个字符，并把离开滑窗的字符 <code>s[l-1]</code> 从滑窗中移除。<code>l</code> 前进完毕后，开始尝试扩张滑窗：<code>r</code> 每次前进一个字符，并把进入滑窗的字符 <code>s[r]</code> 添加到哈希表中，直到 <code>r</code> 越界或 <code>s[r]</code> 在哈希表中出现时，停止扩张，计算滑窗长度 <code>r - l</code> 并更新滑窗的最大长度 <code>ans</code>，最后返回 <code>ans</code> 即可。</p><h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要将 <code>s</code> 遍历一次。</p><p>空间复杂度：O(|∑|)，题目规定“s consists of English letters, digits, symbols and spaces”，即 ASCII 字符集，因此可以认为最坏情况为 ASCII 字符集中的所有字符都出现在滑窗中，所以 ∑ 为 ASCII 字符集的长度，即 <code>128</code>。</p><h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">byte</span>]<span class="type">bool</span>)</span><br><span class="line">    ans, r := <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> l := <span class="number">0</span>; l &lt; <span class="built_in">len</span>(s); l++ &#123;</span><br><span class="line">        <span class="comment">// 从哈希表里删除离开滑窗的字符</span></span><br><span class="line">        <span class="keyword">if</span> l &gt; <span class="number">0</span> &#123;</span><br><span class="line">            <span class="built_in">delete</span>(m, s[l<span class="number">-1</span>])</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 开始尝试向右扩张滑窗，直到越界或遇到滑窗中已有的字符</span></span><br><span class="line">        <span class="comment">// 每次将一个字符纳入滑窗，都将它放入哈希表中</span></span><br><span class="line">        <span class="keyword">for</span> ; r &lt; <span class="built_in">len</span>(s) &amp;&amp; !m[s[r]]; r++ &#123;</span><br><span class="line">            m[s[r]] = <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 向右扩张完毕，计算出滑窗当前的长度 r - l，并与最大值比较</span></span><br><span class="line">        <span class="keyword">if</span> r - l &gt; ans &#123;</span><br><span class="line">            ans = r - l</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题目地址&quot;&gt;&lt;a href=&quot;#题目地址&quot; class=&quot;headerlink&quot; title=&quot;题目地址&quot;&gt;&lt;/a&gt;题目地址&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/longest-substring-withou</summary>
+      
+    
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/categories/Algorithm/"/>
+    
+    <category term="LeetCode" scheme="http://site.noellemu.cloud/categories/Algorithm/LeetCode/"/>
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/tags/Algorithm/"/>
+    
+    <category term="Hash Map" scheme="http://site.noellemu.cloud/tags/Hash-Map/"/>
+    
+    <category term="Sliding Window Algorithm" scheme="http://site.noellemu.cloud/tags/Sliding-Window-Algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【LeetCode HOT 100】2. Add Two Numbers</title>
+    <link href="http://site.noellemu.cloud/f37957f67304/"/>
+    <id>http://site.noellemu.cloud/f37957f67304/</id>
+    <published>2022-11-25T12:14:28.000Z</published>
+    <updated>2022-11-25T14:50:29.284Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a href="https://leetcode.cn/problems/add-two-numbers/">2. Add Two Numbers</a></p><h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>这道题比较简单，使用一个变量 <code>carry</code> 记录进位信息，然后边遍历边相加边判断进位即可，结果可以写入一个新的链表 <code>ans</code>。</p><p>设 <code>l1</code> 当前遍历到的结点为 <code>p1</code>，<code>l2</code> 当前遍历到的结点为 <code>p2</code>，则 <code>carry</code> 为：<code>(p1.Val + p2.Val) / 10</code>，<code>ans</code> 链表该位置上的结点 <code>p</code> 的值为 <code>(p1.Val + p2.Val) % 10</code>。</p><p>当较短的链表遍历完成之后，对于较长的链表，可以有以下两种处理方法：</p><ol><li>分情况讨论，对较长的链表继续与 <code>carry</code> 执行相加操作，比较容易想到但是代码比较复杂。</li><li>在较短的链表后面补 0（<code>p1</code> 或 <code>p2</code> 为 <code>nil</code> 时，将这个结点的值视为 <code>0</code>）并使用短链表没有遍历完成时的相加逻辑（代码比较简单）。</li></ol><p>两个链表都遍历完成之后，如果 <code>carry == 1</code>，则需要在 <code>ans</code> 的最后补上一个 <code>1</code>。</p><h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(max(m, n))，其中 m，n 为两个链表的长度。</p><p>空间复杂度：O(1)，除返回值外只使用了常数个数的空间。</p><h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><p>分类讨论：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addTwoNumbers</span><span class="params">(l1 *ListNode, l2 *ListNode)</span></span> *ListNode &#123;</span><br><span class="line">    carry := <span class="number">0</span></span><br><span class="line">    p1, p2 := l1, l2</span><br><span class="line">    ans := &amp;ListNode&#123;Val: <span class="number">0</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    p := ans</span><br><span class="line">    <span class="keyword">for</span> ; p1 != <span class="literal">nil</span> &amp;&amp; p2 != <span class="literal">nil</span>; p1, p2 = p1.Next, p2.Next &#123;</span><br><span class="line">        val := p1.Val + p2.Val + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> ; p1 != <span class="literal">nil</span>; p1 = p1.Next &#123;</span><br><span class="line">        val := p1.Val + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> ; p2 != <span class="literal">nil</span>; p2 = p2.Next &#123;</span><br><span class="line">        val := p2.Val + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> carry == <span class="number">1</span> &#123;</span><br><span class="line">        p.Next = &amp;ListNode&#123;Val: <span class="number">1</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>补 0:</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addTwoNumbers</span><span class="params">(l1 *ListNode, l2 *ListNode)</span></span> *ListNode &#123;</span><br><span class="line">    carry := <span class="number">0</span></span><br><span class="line">    p1, p2 := l1, l2</span><br><span class="line">    ans := &amp;ListNode&#123;Val: <span class="number">0</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    p := ans</span><br><span class="line">    <span class="keyword">for</span> p1 != <span class="literal">nil</span> || p2 != <span class="literal">nil</span> &#123;</span><br><span class="line">        val1, val2 := <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> p1 != <span class="literal">nil</span> &#123;</span><br><span class="line">            val1 = p1.Val</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> p2 != <span class="literal">nil</span> &#123;</span><br><span class="line">            val2 = p2.Val</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        val := val1 + val2 + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> p1 != <span class="literal">nil</span> &#123;</span><br><span class="line">            p1 = p1.Next</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> p2 != <span class="literal">nil</span> &#123;</span><br><span class="line">            p2 = p2.Next</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> carry == <span class="number">1</span> &#123;</span><br><span class="line">        p.Next = &amp;ListNode&#123;Val: <span class="number">1</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题目地址&quot;&gt;&lt;a href=&quot;#题目地址&quot; class=&quot;headerlink&quot; title=&quot;题目地址&quot;&gt;&lt;/a&gt;题目地址&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/add-two-numbers/&quot;&gt;2. Add</summary>
+      
+    
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/categories/Algorithm/"/>
+    
+    <category term="LeetCode" scheme="http://site.noellemu.cloud/categories/Algorithm/LeetCode/"/>
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/tags/Algorithm/"/>
+    
+    <category term="Linked List" scheme="http://site.noellemu.cloud/tags/Linked-List/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【LeetCode HOT 100】1. Two Sum</title>
+    <link href="http://site.noellemu.cloud/2e76cd4c5980/"/>
+    <id>http://site.noellemu.cloud/2e76cd4c5980/</id>
+    <published>2022-11-25T12:00:04.000Z</published>
+    <updated>2022-11-25T14:51:00.271Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a href="https://leetcode.cn/problems/two-sum/">1. Two Sum</a></p><h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>这道题也是老熟人了，我感觉我至少做过五遍。</p><p>暴力解法（时间复杂度 <code>O(n^2)</code>）大家应该都知道，那就来讲讲非暴力解法吧。</p><p>我们可以用一个哈希表 <code>m</code> 保存 <code>nums</code> 中的元素与下标的对应关系，由于一个数字只能使用一次，因此我们遍历 <code>nums</code> 数组，每次都查找 <code>target</code> 与当前元素 <code>num</code> 的差值是否在哈希表中。如果在，则说明 <code>m[target-num] + num = target</code>，返回 <code>m[target-num]</code> 和 <code>num</code> 的下标 <code>i1</code>；如果不在，则将 <code>num</code> 及其下标添加到哈希表中（即 <code>m[num] = i1</code>）。</p><h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要遍历一次数组。</p><p>空间复杂度：O(n)，哈希表占用的内存空间与 <code>nums</code> 的长度相关。</p><h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">twoSum</span><span class="params">(nums []<span class="type">int</span>, target <span class="type">int</span>)</span></span> []<span class="type">int</span> &#123;</span><br><span class="line">     m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">int</span>]<span class="type">int</span>)</span><br><span class="line">    <span class="keyword">for</span> i, num := <span class="keyword">range</span> nums &#123;</span><br><span class="line">        <span class="keyword">if</span> i1, ok := m[target-num]; !ok &#123;</span><br><span class="line">            m[num] = i</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> []<span class="type">int</span>&#123;i1, i&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> []<span class="type">int</span>&#123;<span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;题目地址&quot;&gt;&lt;a href=&quot;#题目地址&quot; class=&quot;headerlink&quot; title=&quot;题目地址&quot;&gt;&lt;/a&gt;题目地址&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/two-sum/&quot;&gt;1. Two Sum&lt;/a&gt;</summary>
+      
+    
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/categories/Algorithm/"/>
+    
+    <category term="LeetCode" scheme="http://site.noellemu.cloud/categories/Algorithm/LeetCode/"/>
+    
+    
+    <category term="Algorithm" scheme="http://site.noellemu.cloud/tags/Algorithm/"/>
+    
+    <category term="Hash Map" scheme="http://site.noellemu.cloud/tags/Hash-Map/"/>
+    
+  </entry>
   
   <entry>
     <title>记一次缓存引起的数据异常 Bug 的排查过程</title>
@@ -287,6 +459,35 @@
     <category term="Back-end Development" scheme="http://site.noellemu.cloud/tags/Back-end-Development/"/>
     
     <category term="Tutorial" scheme="http://site.noellemu.cloud/tags/Tutorial/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【Testify 列传】01-我想做一个什么样的监控系统？</title>
+    <link href="http://site.noellemu.cloud/2504d68c257c/"/>
+    <id>http://site.noellemu.cloud/2504d68c257c/</id>
+    <published>2022-11-04T19:21:58.000Z</published>
+    <updated>2022-11-25T15:24:00.732Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p><strong>Testify</strong><br>v. 证明；证实；（尤指出庭）作证；见证（上帝的存在）<br>作为监控系统，Testify 能证实系统中存在的问题；同时作为我的毕业设计项目 Divino 的改进项目，Testify 可以说是见证了我的成长。</p></blockquote><h2 id="为什么要做监控系统？"><a href="#为什么要做监控系统？" class="headerlink" title="为什么要做监控系统？"></a>为什么要做监控系统？</h2><p>我的本科毕业设计就做了一个监控系统，名为“Divino”，可惜由于时间紧迫加上不了解监控系统的生态，这个项目十分草率地结束了，开源的计划也泡汤了。</p><p>但是随着我对 SRE、运维开发、基础架构的研究不断深入，我发现监控系统其实是运维工具中最不可少的工具之一，并且自己也十分需要一个趁手好用的监控系统。</p><p>翻看了市面上的一些企业级监控解决方案之后，我却发现它们其实是给已经很成熟的监控系统（如 <code>Prometheus</code>、<code>VictoriaMetrics</code> 等）套了一层皮，仅仅是实现了一些提高用户体验等方面的业务需求，并没有触及到监控系统最核心的部分，开发定制能力比较差。并且其中有部分还是商业软件，开源版本没有全部功能。再加上重构 <code>Divino</code> 势在必行，那么 <code>Testify</code> 的定位就十分明确了——<code>Testify</code> 是一个基于 <code>TSDB</code> 的极简主义的高可扩展性的监控系统。</p><h2 id="如何理解“极简主义”？"><a href="#如何理解“极简主义”？" class="headerlink" title="如何理解“极简主义”？"></a>如何理解“极简主义”？</h2><p>与 <code>Metropolitan</code> 一样，<code>Testify</code> 其实仅仅是实现了一些最简单的功能，可以满足中小规模场景下的应用。由于每个公司都有每个公司的业务特点和二次开发能力，因此 <code>Testify</code> 应该具有很强的扩展性和二次开发能力，满足不同业务规模下的直接使用和二次开发的需求。</p><h2 id="Testify-的架构和技术栈"><a href="#Testify-的架构和技术栈" class="headerlink" title="Testify 的架构和技术栈"></a>Testify 的架构和技术栈</h2><p><code>Testify</code> 采用分布式架构，分为两个模块：<code>Testify-API</code> 和 <code>Testify-Server</code>。其中 <code>Testify-API</code> 是一个无状态的 <code>RESTful API</code> 服务，用于管理 <code>Testify</code>、查看监控历史数据等；<code>Testify-Server</code> 则提供了有状态的告警判断、数据转换等服务，若有多种数据源，则一种 <code>TSDB</code> 就对应一种 <code>Testify-Server</code>。这样的架构设计是为了考虑到扩展性和性能——毕竟我想让 <code>Testify</code> 成为一个能在不同规模的业务场景中都适用的监控系统，高资源消耗的 <code>Testify-Server</code> 和低资源消耗的 <code>Testify-API</code> 分开也能尽量确保两者不会互相争夺资源。二者间可以直接配置对方的地址，也可以通过服务发现的方式进行动态发现。</p><p><code>Testify</code> 同时支持 <code>Push</code> 和 <code>Pull</code> 两种模式，并且兼容 <code>Prometheus</code> 和 <code>OpenTelemetry</code>，这样做的目的是为了尽可能地提高 <code>Testify</code> 的使用场景，并且让业务能够尽量无缝地迁移到 <code>Testify</code>。</p><p>前端：</p><ul><li><p>前端框架：React</p></li><li><p>UI 框架：Ant Design</p></li><li><p>数据可视化框架：D3 或 AntV 或 ECharts 等（未定）</p></li></ul><p>后端：</p><ul><li><p>Web 框架：Gin</p></li><li><p>RPC 框架：RPCX（可定制）</p></li><li><p>数据库：MongoDB（可定制）</p></li><li><p>TSDB：InfluxDB（可定制）</p></li></ul><h2 id="Testify-的特色功能"><a href="#Testify-的特色功能" class="headerlink" title="Testify 的特色功能"></a>Testify 的特色功能</h2><h3 id="同时支持-Push-和-Pull"><a href="#同时支持-Push-和-Pull" class="headerlink" title="同时支持 Push 和 Pull"></a>同时支持 Push 和 Pull</h3><p>同时支持 <code>Push</code> 和 <code>Pull</code> 两种模式的监控系统可不常见，而同时支持两种模式的好处就是用户可以根据自己的业务场景选择合适的数据采集模式。</p><h3 id="可以任意更换数据库和-TSDB"><a href="#可以任意更换数据库和-TSDB" class="headerlink" title="可以任意更换数据库和 TSDB"></a>可以任意更换数据库和 TSDB</h3><p><code>Testify</code> 在设计时就充分考虑到了扩展性，虽然默认使用 <code>InfluxDB</code>，但是用户和项目参与者可以根据自己的需要和实际情况来二次开发，适配其他的 TSDB。</p><h3 id="Client-SDK-和自定义的接入层"><a href="#Client-SDK-和自定义的接入层" class="headerlink" title="Client SDK 和自定义的接入层"></a>Client SDK 和自定义的接入层</h3><p>虽然 <code>Testify</code> 默认提供了 <code>HTTP API</code>，但在企业内部，监控系统与其他系统之间相互调用也是很常见的需求。为此，<code>Testify</code> 与 <code>Metropolitan</code> 一样提供了 <code>Client SDK</code> 供用户方便地调用 <code>Testify</code> 的各项功能，同时 <code>Testify</code> 还支持用户自行开发自己的接入方式，如 <code>gRPC</code> 等。</p><h3 id="部署方便"><a href="#部署方便" class="headerlink" title="部署方便"></a>部署方便</h3><p>服务端只有两个核心组件的 <code>Testify</code> 相比某些微服务架构的监控系统更容易部署，在运行时占用的资源也更小，更利于小规模场景使用。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>项目地址：<a href="https://github.com/noellemu/testify">Testify</a></p><p>欢迎大家来 Testify 的仓库逛逛，虽然目前什么都没有，但是以后随着基本功能慢慢成型，代码也会逐渐发布到仓库中，欢迎大家参与 Testify 项目，也希望大家可以给个 Star 或者 Fork，非常感谢～</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Testify&lt;/strong&gt;&lt;br&gt;v. 证明；证实；（尤指出庭）作证；见证（上帝的存在）&lt;br&gt;作为监控系统，Testify 能证实系统中存在的问题；同时作为我的毕业设计项目 Divino 的改进项目，Testify 可以说是</summary>
+      
+    
+    
+    
+    <category term="Testify" scheme="http://site.noellemu.cloud/categories/Testify/"/>
+    
+    <category term="Open Source" scheme="http://site.noellemu.cloud/categories/Testify/Open-Source/"/>
+    
+    
+    <category term="Open Source" scheme="http://site.noellemu.cloud/tags/Open-Source/"/>
+    
+    <category term="Testify" scheme="http://site.noellemu.cloud/tags/Testify/"/>
     
   </entry>
   

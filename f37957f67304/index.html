@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="never">
+  
+  <title>【LeetCode HOT 100】2. Add Two Numbers - Noelle Mu | SRE | Open Source</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="【LeetCode HOT 100】2. Add Two Numbers - Noelle Mu | SRE | Open Source" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://site.noellemu.cloud/f37957f67304/index.html" />
+  
+  <meta property="og:image" content="/favicon.ico" />
+  
+  <meta property="og:article:published_time" content="2022-11-25T12:14:28.000Z" />
+  
+  <meta property="og:article:author" content="Noelle Mu" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Noelle Mu</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/resume">Resume</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/tags">Tags</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/noellemu" target="_blank">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/Algorithm/">Algorithm</a>
+        
+            <a href="/categories/Algorithm/LeetCode/">LeetCode</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>November</span>
+            <span>25,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">【LeetCode HOT 100】2. Add Two Numbers</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/add-two-numbers/">2. Add Two Numbers</a></p>
+<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>这道题比较简单，使用一个变量 <code>carry</code> 记录进位信息，然后边遍历边相加边判断进位即可，结果可以写入一个新的链表 <code>ans</code>。</p>
+<p>设 <code>l1</code> 当前遍历到的结点为 <code>p1</code>，<code>l2</code> 当前遍历到的结点为 <code>p2</code>，则 <code>carry</code> 为：<code>(p1.Val + p2.Val) / 10</code>，<code>ans</code> 链表该位置上的结点 <code>p</code> 的值为 <code>(p1.Val + p2.Val) % 10</code>。</p>
+<p>当较短的链表遍历完成之后，对于较长的链表，可以有以下两种处理方法：</p>
+<ol>
+<li>分情况讨论，对较长的链表继续与 <code>carry</code> 执行相加操作，比较容易想到但是代码比较复杂。</li>
+<li>在较短的链表后面补 0（<code>p1</code> 或 <code>p2</code> 为 <code>nil</code> 时，将这个结点的值视为 <code>0</code>）并使用短链表没有遍历完成时的相加逻辑（代码比较简单）。</li>
+</ol>
+<p>两个链表都遍历完成之后，如果 <code>carry == 1</code>，则需要在 <code>ans</code> 的最后补上一个 <code>1</code>。</p>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(max(m, n))，其中 m，n 为两个链表的长度。</p>
+<p>空间复杂度：O(1)，除返回值外只使用了常数个数的空间。</p>
+<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><p>分类讨论：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addTwoNumbers</span><span class="params">(l1 *ListNode, l2 *ListNode)</span></span> *ListNode &#123;</span><br><span class="line">    carry := <span class="number">0</span></span><br><span class="line">    p1, p2 := l1, l2</span><br><span class="line">    ans := &amp;ListNode&#123;Val: <span class="number">0</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    p := ans</span><br><span class="line">    <span class="keyword">for</span> ; p1 != <span class="literal">nil</span> &amp;&amp; p2 != <span class="literal">nil</span>; p1, p2 = p1.Next, p2.Next &#123;</span><br><span class="line">        val := p1.Val + p2.Val + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> ; p1 != <span class="literal">nil</span>; p1 = p1.Next &#123;</span><br><span class="line">        val := p1.Val + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> ; p2 != <span class="literal">nil</span>; p2 = p2.Next &#123;</span><br><span class="line">        val := p2.Val + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> carry == <span class="number">1</span> &#123;</span><br><span class="line">        p.Next = &amp;ListNode&#123;Val: <span class="number">1</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>补 0:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addTwoNumbers</span><span class="params">(l1 *ListNode, l2 *ListNode)</span></span> *ListNode &#123;</span><br><span class="line">    carry := <span class="number">0</span></span><br><span class="line">    p1, p2 := l1, l2</span><br><span class="line">    ans := &amp;ListNode&#123;Val: <span class="number">0</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    p := ans</span><br><span class="line">    <span class="keyword">for</span> p1 != <span class="literal">nil</span> || p2 != <span class="literal">nil</span> &#123;</span><br><span class="line">        val1, val2 := <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> p1 != <span class="literal">nil</span> &#123;</span><br><span class="line">            val1 = p1.Val</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> p2 != <span class="literal">nil</span> &#123;</span><br><span class="line">            val2 = p2.Val</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        val := val1 + val2 + carry</span><br><span class="line">        carry = val / <span class="number">10</span></span><br><span class="line">        val %= <span class="number">10</span></span><br><span class="line">        node := &amp;ListNode&#123;Val: val, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">        p.Next = node</span><br><span class="line">        p = p.Next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> p1 != <span class="literal">nil</span> &#123;</span><br><span class="line">            p1 = p1.Next</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> p2 != <span class="literal">nil</span> &#123;</span><br><span class="line">            p2 = p2.Next</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> carry == <span class="number">1</span> &#123;</span><br><span class="line">        p.Next = &amp;ListNode&#123;Val: <span class="number">1</span>, Next: <span class="literal">nil</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Noelle Mu, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Linked-List/" class="tag">#Linked List</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/50d286f3428f/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">【LeetCode HOT 100】3. Longest Substring Without Repeating Characters</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2e76cd4c5980/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">【LeetCode HOT 100】1. Two Sum</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="noellemu/site_giscus" data-repo-id="R_kgDOIYJz1w" data-category="Announcements" data-category-id="DIC_kwDOIYJz184CSY68" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h4 class="title">Site</h4>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/" class="item">Home</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+            </div>
+            
+            <div class="group">
+                <h4 class="title">Projects</h4>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/noellemu/testify" class="item">Testify (A distributed monitoring system)</a>
+                
+                <a href="" class="item">Kopi (TODO) (A framework for building distributed systems)</a>
+                
+                <a href="" class="item">Metropolitan (TODO) (An ops script execution and management system)</a>
+                
+            </div>
+            
+            <div class="group">
+                <h4 class="title">Me</h4>
+                
+                <a href="mailto:noellemu.dev@outlook.com" class="item">Email</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/noellemu" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://t.me/noellemu" class="item">Telegram</a>
+                
+                <a target="_blank" rel="noopener" href="https://twitter.com/noellemu_dev" class="item">Twitter</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2022 Noelle Mu<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
