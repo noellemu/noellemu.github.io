@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <meta name="referrer" content="never">
   
-  <title>【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source</title>
+  <title>【LeetCode HOT 100】31. Next Permutation - Noelle Mu | SRE | Open Source</title>
   
     <link rel="shortcut icon" href="/favicon.ico">
   
@@ -17,15 +17,15 @@
   
   
   
-  <meta property="og:title" content="【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source" />
+  <meta property="og:title" content="【LeetCode HOT 100】31. Next Permutation - Noelle Mu | SRE | Open Source" />
   
   <meta property="og:type" content="article" />
   
-  <meta property="og:url" content="http://site.noellemu.cloud/554b45c19de4/index.html" />
+  <meta property="og:url" content="http://site.noellemu.cloud/52db1f9bee4e/index.html" />
   
   <meta property="og:image" content="/favicon.ico" />
   
-  <meta property="og:article:published_time" content="2022-11-25T14:34:53.000Z" />
+  <meta property="og:article:published_time" content="2022-11-25T19:59:26.000Z" />
   
   <meta property="og:article:author" content="Noelle Mu" />
   
@@ -151,24 +151,42 @@
         
         <div class="date" id="date">
             <span>November</span>
-            <span>25,</span>
+            <span>26,</span>
             <span>2022</span>
         </div>
         
 
-        <h2 class="title">【LeetCode HOT 100】19. Remove Nth Node From End of List</h2>
+        <h2 class="title">【LeetCode HOT 100】31. Next Permutation</h2>
     </div>
 
     <div class="divider"></div>
 
     <div class="content">
-        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></p>
-<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>看到链表第一反应：双指针。</p>
-<p>求链表长度等比较简单的方法就不讲了，这里讲一下最优解（双指针）。</p>
-<p>这道题如果是一个有头结点的链表，那么能简化很多代码，我们可以给链表手动添加一个头结点 <code>dummy</code>。初始情况下快指针 <code>f</code> 指向第一个结点 <code>head</code>，慢指针 <code>s</code> 指向头结点 <code>dummy</code>。由于需要求倒数第 n 个结点，那么可以让快指针 <code>f</code> 先走 n 步，然后快慢指针一起走，直到 <code>f</code> 越界为止，此时 <code>s</code> 指向的就是倒数第 <code>n</code> 个结点的前一个结点，直接把 <code>s</code> 的下一个结点从链表中摘除（<code>s.Next = s.Next.Next</code>）即可。注意最后需要返回 <code>dummy.Next</code>，否则链表中只有一个结点的情况会 WA（也可以使用 <code>head.Next == nil</code> 特殊判断一下）。</p>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要完整遍历一次链表。</p>
+        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/next-permutation/">31. Next Permutation</a></p>
+<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>这道题是一个既有的算法，维基百科地址：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order">Permutation - Wikipedia</a>，原文如下：</p>
+<blockquote>
+<p>The following algorithm generates the next permutation lexicographically after a given permutation. It changes the given permutation in-place.</p>
+<ol>
+<li>Find the largest index k such that <code>a[k] &lt; a[k + 1]</code>. If no such index exists, the permutation is the last permutation.</li>
+<li>Find the largest index l greater than k such that <code>a[k]</code> &lt; <code>a[l]</code>.</li>
+<li>Swap the value of <code>a[k]</code> with that of <code>a[l]</code>.</li>
+<li>Reverse the sequence from <code>a[k + 1]</code> up to and including the final element <code>a[n]</code>.</li>
+</ol>
+</blockquote>
+<p>翻译过来就是：</p>
+<blockquote>
+<p>以下算法给出了生成某个全排列的字典序中的下一个全排列的方法，该算法是原地工作的。</p>
+<ol>
+<li>找到最大的满足 <code>a[k] &lt; a[k + 1]</code> 的下标 <code>k</code>（也就是最后一个升序序列的起点），如果找不到，则该全排列就是最后一个全排列（即整个数组为一个降序序列。按题目要求，我们要翻转整个数组）。</li>
+<li>找到最大的满足 <code>a[k] &lt; a[l]</code> 的下标 <code>l</code>（也就是从下标 <code>k</code> 开始比 <code>a[k]</code> 大的第一个数）。</li>
+<li>交换 <code>a[k]</code> 和 <code>a[l]</code> 的值。</li>
+<li>将数组从 <code>a[k + 1]</code> 开始到数组末尾的部分翻转（此时这部分是一个升序序列）。</li>
+</ol>
+</blockquote>
+<p>按照这个算法实现即可。这里我用 <code>i</code> 和 <code>j</code> 代表算法描述中的 <code>k</code> 和 <code>k + 1</code>，用 <code>k</code> 代表 <code>l</code>，并且从后往前遍历数组。</p>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要遍历数组三次，前两次找到 <code>i</code> 和 <code>j</code>，第三次翻转 <code>nums[j:]</code>。</p>
 <p>空间复杂度：O(1)，只使用了常数个数的存储空间。</p>
-<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeNthFromEnd</span><span class="params">(head *ListNode, n <span class="type">int</span>)</span></span> *ListNode &#123;</span><br><span class="line">    dummy := &amp;ListNode&#123;Val: <span class="number">-1</span>, Next: head&#125;</span><br><span class="line">    f, s := head, dummy</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> f != <span class="literal">nil</span> &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">        s = s.Next</span><br><span class="line">    &#125;</span><br><span class="line">    s.Next = s.Next.Next</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dummy.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">nextPermutation</span><span class="params">(nums []<span class="type">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt; <span class="number">2</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找到最后一个升序对 (i, j)</span></span><br><span class="line">    n := <span class="built_in">len</span>(nums)</span><br><span class="line">    i, j := n - <span class="number">2</span>, n - <span class="number">1</span></span><br><span class="line">    k := n - <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i &gt;= <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> nums[i] &lt; nums[j] &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        i--</span><br><span class="line">        j--</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果 i &lt; 0，说明整个数组都是降序的，跳过后续步骤直接翻转整个数组</span></span><br><span class="line">    <span class="keyword">if</span> i &gt;= <span class="number">0</span> &#123;</span><br><span class="line">        <span class="comment">// 找到第一个比 i 大的值 k</span></span><br><span class="line">        <span class="keyword">for</span> nums[i] &gt;= nums[k] &#123;</span><br><span class="line">            k--</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 交换 nums[i] 和 nums[k]</span></span><br><span class="line">        nums[i], nums[k] = nums[k], nums[i]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 反转 nums[j:]</span></span><br><span class="line">    <span class="keyword">for</span> a, b := j, n<span class="number">-1</span>; a &lt; b; a, b = a+<span class="number">1</span>, b<span class="number">-1</span> &#123;</span><br><span class="line">        nums[a], nums[b] = nums[b], nums[a]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -182,7 +200,7 @@
         <p class="tags">
             
             <i class="icon"></i>
-            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Two-Pointers/" class="tag">#Two Pointers</a><a href="/tags/Linked-List/" class="tag">#Linked List</a>
+            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Simulation/" class="tag">#Simulation</a>
         </p>
         
     </div>
@@ -190,21 +208,21 @@
 
     <div class="container post-prev-next">
         
-        <a href="/c96db4f9094a/" class="next">
+        <a href="/c6406c4d2ccc/" class="next">
             <div>
                 <div class="text">
                     <p class="label">Next</p>
-                    <h3 class="title">【LeetCode HOT 100】48. Rotate Image</h3>
+                    <h3 class="title">【HackerRank 1 Week Preparation Kit】01-Plus Minus</h3>
                 </div>
             </div>
         </a>
         
         
-        <a href="/4b76ec1a08c6/" class="prev">
+        <a href="/3ab051503b70/" class="prev">
             <div>
                 <div class="text">
                     <p class="label">Previous</p>
-                    <h3 class="title">【LeetCode HOT 100】11. Container With Most Water</>
+                    <h3 class="title">【LeetCode HOT 100】39. Combination Sum</>
                 </div>
             </div>
         </a>

@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <meta name="referrer" content="never">
   
-  <title>【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source</title>
+  <title>【LeetCode HOT 100】39. Combination Sum - Noelle Mu | SRE | Open Source</title>
   
     <link rel="shortcut icon" href="/favicon.ico">
   
@@ -17,15 +17,15 @@
   
   
   
-  <meta property="og:title" content="【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source" />
+  <meta property="og:title" content="【LeetCode HOT 100】39. Combination Sum - Noelle Mu | SRE | Open Source" />
   
   <meta property="og:type" content="article" />
   
-  <meta property="og:url" content="http://site.noellemu.cloud/554b45c19de4/index.html" />
+  <meta property="og:url" content="http://site.noellemu.cloud/3ab051503b70/index.html" />
   
   <meta property="og:image" content="/favicon.ico" />
   
-  <meta property="og:article:published_time" content="2022-11-25T14:34:53.000Z" />
+  <meta property="og:article:published_time" content="2022-11-25T19:45:24.000Z" />
   
   <meta property="og:article:author" content="Noelle Mu" />
   
@@ -151,24 +151,24 @@
         
         <div class="date" id="date">
             <span>November</span>
-            <span>25,</span>
+            <span>26,</span>
             <span>2022</span>
         </div>
         
 
-        <h2 class="title">【LeetCode HOT 100】19. Remove Nth Node From End of List</h2>
+        <h2 class="title">【LeetCode HOT 100】39. Combination Sum</h2>
     </div>
 
     <div class="divider"></div>
 
     <div class="content">
-        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></p>
-<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>看到链表第一反应：双指针。</p>
-<p>求链表长度等比较简单的方法就不讲了，这里讲一下最优解（双指针）。</p>
-<p>这道题如果是一个有头结点的链表，那么能简化很多代码，我们可以给链表手动添加一个头结点 <code>dummy</code>。初始情况下快指针 <code>f</code> 指向第一个结点 <code>head</code>，慢指针 <code>s</code> 指向头结点 <code>dummy</code>。由于需要求倒数第 n 个结点，那么可以让快指针 <code>f</code> 先走 n 步，然后快慢指针一起走，直到 <code>f</code> 越界为止，此时 <code>s</code> 指向的就是倒数第 <code>n</code> 个结点的前一个结点，直接把 <code>s</code> 的下一个结点从链表中摘除（<code>s.Next = s.Next.Next</code>）即可。注意最后需要返回 <code>dummy.Next</code>，否则链表中只有一个结点的情况会 WA（也可以使用 <code>head.Next == nil</code> 特殊判断一下）。</p>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要完整遍历一次链表。</p>
-<p>空间复杂度：O(1)，只使用了常数个数的存储空间。</p>
-<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeNthFromEnd</span><span class="params">(head *ListNode, n <span class="type">int</span>)</span></span> *ListNode &#123;</span><br><span class="line">    dummy := &amp;ListNode&#123;Val: <span class="number">-1</span>, Next: head&#125;</span><br><span class="line">    f, s := head, dummy</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> f != <span class="literal">nil</span> &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">        s = s.Next</span><br><span class="line">    &#125;</span><br><span class="line">    s.Next = s.Next.Next</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dummy.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum/">39. Combination Sum</a></p>
+<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>全排列问题，一眼递归回溯。</p>
+<p>这个问题的求解过程有点类似于 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations/solution/">46</a>，都需要使用类似于枚举输入数组 <code>candidates</code> 全排列的思路，不过这道题的 <code>candidates</code> 数组中的元素是可以重复使用的，因此每次递归时都需要从当前结点开始。此外，为避免重复解，在每次递归遍历 <code>candidates</code> 数组时需要从当前搜索位置 <code>start</code> 开始遍历（当然你也可以考虑使用 <code>visited</code> 标记数组之类的方法来去重），每次从 <code>target</code> 中减掉当前遍历到的元素，直到 <code>target</code> 等于 0 时达到递归边界，此时根结点到该叶子结点的路径即为一组解。</p>
+<p>由于输入规模在递归回溯类问题中比较大，所以可以考虑对解空间树剪枝。先对 <code>candidates</code> 从小到大排序，当遍历到解空间树的某个结点时，如果 <code>target</code> 减掉要遍历的下一个元素的值为负数，说明这个值和之后所有的值都不能满足要求，直接 <code>break</code> 即可。</p>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(S)，其中 S 为所有可行解的长度之和。</p>
+<p>空间复杂度：O(target)，最坏情况即 <code>candidates</code> 为 <code>[1]</code> 时，递归调用栈的最大深度为 <code>target</code>。</p>
+<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">combinationSum</span><span class="params">(candidates []<span class="type">int</span>, target <span class="type">int</span>)</span></span> [][]<span class="type">int</span> &#123;</span><br><span class="line">    ans := <span class="built_in">make</span>([][]<span class="type">int</span>, <span class="number">0</span>)</span><br><span class="line">    path := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">0</span>)</span><br><span class="line">    sort.Ints(candidates)</span><br><span class="line">    <span class="keyword">var</span> dfs <span class="function"><span class="keyword">func</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span></span><br><span class="line">    dfs = <span class="function"><span class="keyword">func</span><span class="params">(start, target <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// 递归边界：target 为 0，表示找到了一组解</span></span><br><span class="line">        <span class="keyword">if</span> target == <span class="number">0</span> &#123;</span><br><span class="line">            _path := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="built_in">len</span>(path))</span><br><span class="line">            <span class="built_in">copy</span>(_path, path)</span><br><span class="line">            ans = <span class="built_in">append</span>(ans, _path)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 依次遍历剩余的数字，避免结果重复</span></span><br><span class="line">        <span class="keyword">for</span> i := start; i &lt; <span class="built_in">len</span>(candidates); i++ &#123;</span><br><span class="line">            <span class="comment">// 由于前面已经对 candidates 排过序了，所以如果 target - candidates[i] 是负数，可以直接跳过后面的数</span></span><br><span class="line">            <span class="keyword">if</span> target - candidates[i] &lt; <span class="number">0</span> &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            path = <span class="built_in">append</span>(path, candidates[i])</span><br><span class="line">            <span class="comment">// 由于数字可以重复使用，所以这里的搜索起点仍然是当前位置</span></span><br><span class="line">            dfs(i, target - candidates[i])</span><br><span class="line">            path = path[:<span class="built_in">len</span>(path)<span class="number">-1</span>]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(<span class="number">0</span>, target)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -182,7 +182,7 @@
         <p class="tags">
             
             <i class="icon"></i>
-            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Two-Pointers/" class="tag">#Two Pointers</a><a href="/tags/Linked-List/" class="tag">#Linked List</a>
+            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Recursion/" class="tag">#Recursion</a>
         </p>
         
     </div>
@@ -190,21 +190,21 @@
 
     <div class="container post-prev-next">
         
-        <a href="/c96db4f9094a/" class="next">
+        <a href="/52db1f9bee4e/" class="next">
             <div>
                 <div class="text">
                     <p class="label">Next</p>
-                    <h3 class="title">【LeetCode HOT 100】48. Rotate Image</h3>
+                    <h3 class="title">【LeetCode HOT 100】31. Next Permutation</h3>
                 </div>
             </div>
         </a>
         
         
-        <a href="/4b76ec1a08c6/" class="prev">
+        <a href="/d5fec3603d29/" class="prev">
             <div>
                 <div class="text">
                     <p class="label">Previous</p>
-                    <h3 class="title">【LeetCode HOT 100】11. Container With Most Water</>
+                    <h3 class="title">【LeetCode HOT 100】22. Generate Parentheses</>
                 </div>
             </div>
         </a>

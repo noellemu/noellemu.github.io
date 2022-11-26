@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <meta name="referrer" content="never">
   
-  <title>【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source</title>
+  <title>【LeetCode HOT 100】15. 3Sum - Noelle Mu | SRE | Open Source</title>
   
     <link rel="shortcut icon" href="/favicon.ico">
   
@@ -17,15 +17,15 @@
   
   
   
-  <meta property="og:title" content="【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source" />
+  <meta property="og:title" content="【LeetCode HOT 100】15. 3Sum - Noelle Mu | SRE | Open Source" />
   
   <meta property="og:type" content="article" />
   
-  <meta property="og:url" content="http://site.noellemu.cloud/554b45c19de4/index.html" />
+  <meta property="og:url" content="http://site.noellemu.cloud/9623d83cd926/index.html" />
   
   <meta property="og:image" content="/favicon.ico" />
   
-  <meta property="og:article:published_time" content="2022-11-25T14:34:53.000Z" />
+  <meta property="og:article:published_time" content="2022-11-25T18:02:40.000Z" />
   
   <meta property="og:article:author" content="Noelle Mu" />
   
@@ -151,24 +151,23 @@
         
         <div class="date" id="date">
             <span>November</span>
-            <span>25,</span>
+            <span>26,</span>
             <span>2022</span>
         </div>
         
 
-        <h2 class="title">【LeetCode HOT 100】19. Remove Nth Node From End of List</h2>
+        <h2 class="title">【LeetCode HOT 100】15. 3Sum</h2>
     </div>
 
     <div class="divider"></div>
 
     <div class="content">
-        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></p>
-<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>看到链表第一反应：双指针。</p>
-<p>求链表长度等比较简单的方法就不讲了，这里讲一下最优解（双指针）。</p>
-<p>这道题如果是一个有头结点的链表，那么能简化很多代码，我们可以给链表手动添加一个头结点 <code>dummy</code>。初始情况下快指针 <code>f</code> 指向第一个结点 <code>head</code>，慢指针 <code>s</code> 指向头结点 <code>dummy</code>。由于需要求倒数第 n 个结点，那么可以让快指针 <code>f</code> 先走 n 步，然后快慢指针一起走，直到 <code>f</code> 越界为止，此时 <code>s</code> 指向的就是倒数第 <code>n</code> 个结点的前一个结点，直接把 <code>s</code> 的下一个结点从链表中摘除（<code>s.Next = s.Next.Next</code>）即可。注意最后需要返回 <code>dummy.Next</code>，否则链表中只有一个结点的情况会 WA（也可以使用 <code>head.Next == nil</code> 特殊判断一下）。</p>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要完整遍历一次链表。</p>
+        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/3sum/">15. 3Sum</a></p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>最简单的暴力方法（时间复杂度为 O(n ^ 3)）相信大家都能想到，但这个问题的难点在于去除重复解，在暴力方法中，可以使用哈希表来去除。</p>
+<p>这道题目的最优解是排序 + 双指针。我们可以先对 <code>nums</code> 数组从小到大排序，然后依次遍历每一个负数并跳过重复的数，然后定义 <code>l</code>、<code>r</code> 两个指针分别指向遍历到的数之后的第一个数和数组的末尾，并计算遍历到的数、<code>nums[l]</code>、<code>nums[r]</code> 相加是 0、正数还是负数。如果是 0，则找到了一组解；如果是负数，说明 <code>nums[l]</code> 太小，将 <code>l</code> 向右（更大的数的方向）移动；如果是正数，说明 <code>nums[r]</code> 太大，将 <code>r</code> 向左（更小的数的方向）移动，直到两个指针相遇，注意在移动过程中需要跳过重复的数。</p>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n ^ 2)，其中排序算法 O(nlog n)，双指针遍历过程 O(n) * O(n) &#x3D; O(n ^ 2)：对于数组中的每一个数，在最坏情况下双指针都要遍历完整个数组。</p>
 <p>空间复杂度：O(1)，只使用了常数个数的存储空间。</p>
-<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeNthFromEnd</span><span class="params">(head *ListNode, n <span class="type">int</span>)</span></span> *ListNode &#123;</span><br><span class="line">    dummy := &amp;ListNode&#123;Val: <span class="number">-1</span>, Next: head&#125;</span><br><span class="line">    f, s := head, dummy</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> f != <span class="literal">nil</span> &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">        s = s.Next</span><br><span class="line">    &#125;</span><br><span class="line">    s.Next = s.Next.Next</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dummy.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">threeSum</span><span class="params">(nums []<span class="type">int</span>)</span></span> [][]<span class="type">int</span> &#123;</span><br><span class="line">    ans := <span class="built_in">make</span>([][]<span class="type">int</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="comment">// 从小到大排序</span></span><br><span class="line">    sort.Ints(nums)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(nums); i++ &#123;</span><br><span class="line">        <span class="comment">// 如果第一个元素就大于 0，说明后面不可能存在小于 0 的解了，停止搜索</span></span><br><span class="line">        <span class="keyword">if</span> nums[<span class="number">0</span>] &gt; <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> ans</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 跳过重复的数</span></span><br><span class="line">        <span class="keyword">if</span> i &gt; <span class="number">0</span> &amp;&amp; nums[i] == nums[i<span class="number">-1</span>] &#123;</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line">        l, r := i + <span class="number">1</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> l &lt; r &#123;</span><br><span class="line">            <span class="keyword">if</span> nums[l] + nums[r] + nums[i] == <span class="number">0</span> &#123;</span><br><span class="line">                <span class="comment">// 等于 0，找到了一组解</span></span><br><span class="line">                ans = <span class="built_in">append</span>(ans, []<span class="type">int</span>&#123;nums[i], nums[l], nums[r]&#125;)</span><br><span class="line">                <span class="comment">// 跳过重复的数</span></span><br><span class="line">                <span class="keyword">for</span> l &lt; r &amp;&amp; nums[l] == nums[l+<span class="number">1</span>] &#123;</span><br><span class="line">                    l++</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">for</span> l &lt; r &amp;&amp; nums[r] == nums[r<span class="number">-1</span>] &#123;</span><br><span class="line">                    r--</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 如果结果大于 0，尝试移动右指针，否则移动左指针</span></span><br><span class="line">            <span class="keyword">if</span> nums[l] + nums[r] + nums[i] &gt; <span class="number">0</span> &#123;</span><br><span class="line">                r--</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                l++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -182,7 +181,7 @@
         <p class="tags">
             
             <i class="icon"></i>
-            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Two-Pointers/" class="tag">#Two Pointers</a><a href="/tags/Linked-List/" class="tag">#Linked List</a>
+            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Two-Pointers/" class="tag">#Two Pointers</a>
         </p>
         
     </div>
@@ -190,21 +189,21 @@
 
     <div class="container post-prev-next">
         
-        <a href="/c96db4f9094a/" class="next">
+        <a href="/d35d64ad76b6/" class="next">
             <div>
                 <div class="text">
                     <p class="label">Next</p>
-                    <h3 class="title">【LeetCode HOT 100】48. Rotate Image</h3>
+                    <h3 class="title">【LeetCode HOT 100】17. Letter Combinations of a Phone Number</h3>
                 </div>
             </div>
         </a>
         
         
-        <a href="/4b76ec1a08c6/" class="prev">
+        <a href="/816153baed83/" class="prev">
             <div>
                 <div class="text">
                     <p class="label">Previous</p>
-                    <h3 class="title">【LeetCode HOT 100】11. Container With Most Water</>
+                    <h3 class="title">【LeetCode HOT 100】34. Find First and Last Position of Element in Sorted Array</>
                 </div>
             </div>
         </a>

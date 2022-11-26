@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <meta name="referrer" content="never">
   
-  <title>【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source</title>
+  <title>【LeetCode HOT 100】33. Search in Rotated Sorted Array - Noelle Mu | SRE | Open Source</title>
   
     <link rel="shortcut icon" href="/favicon.ico">
   
@@ -17,15 +17,15 @@
   
   
   
-  <meta property="og:title" content="【LeetCode HOT 100】19. Remove Nth Node From End of List - Noelle Mu | SRE | Open Source" />
+  <meta property="og:title" content="【LeetCode HOT 100】33. Search in Rotated Sorted Array - Noelle Mu | SRE | Open Source" />
   
   <meta property="og:type" content="article" />
   
-  <meta property="og:url" content="http://site.noellemu.cloud/554b45c19de4/index.html" />
+  <meta property="og:url" content="http://site.noellemu.cloud/03b20af16870/index.html" />
   
   <meta property="og:image" content="/favicon.ico" />
   
-  <meta property="og:article:published_time" content="2022-11-25T14:34:53.000Z" />
+  <meta property="og:article:published_time" content="2022-11-25T17:39:04.000Z" />
   
   <meta property="og:article:author" content="Noelle Mu" />
   
@@ -151,24 +151,41 @@
         
         <div class="date" id="date">
             <span>November</span>
-            <span>25,</span>
+            <span>26,</span>
             <span>2022</span>
         </div>
         
 
-        <h2 class="title">【LeetCode HOT 100】19. Remove Nth Node From End of List</h2>
+        <h2 class="title">【LeetCode HOT 100】33. Search in Rotated Sorted Array</h2>
     </div>
 
     <div class="divider"></div>
 
     <div class="content">
-        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">19. Remove Nth Node From End of List</a></p>
-<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>看到链表第一反应：双指针。</p>
-<p>求链表长度等比较简单的方法就不讲了，这里讲一下最优解（双指针）。</p>
-<p>这道题如果是一个有头结点的链表，那么能简化很多代码，我们可以给链表手动添加一个头结点 <code>dummy</code>。初始情况下快指针 <code>f</code> 指向第一个结点 <code>head</code>，慢指针 <code>s</code> 指向头结点 <code>dummy</code>。由于需要求倒数第 n 个结点，那么可以让快指针 <code>f</code> 先走 n 步，然后快慢指针一起走，直到 <code>f</code> 越界为止，此时 <code>s</code> 指向的就是倒数第 <code>n</code> 个结点的前一个结点，直接把 <code>s</code> 的下一个结点从链表中摘除（<code>s.Next = s.Next.Next</code>）即可。注意最后需要返回 <code>dummy.Next</code>，否则链表中只有一个结点的情况会 WA（也可以使用 <code>head.Next == nil</code> 特殊判断一下）。</p>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(n)，需要完整遍历一次链表。</p>
+        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/">33. Search in Rotated Sorted Array</a></p>
+<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p>看到 O(log n) 的时间复杂度第一反应二分查找。</p>
+<p>这道题需要分情况讨论，一图胜千言：</p>
+<p><img src="https://pic.leetcode.cn/1669485127-hCyVUY-IMG_33F9763FE2FE-1.jpeg" alt="Binary Search"></p>
+<p>解释（设 <code>m</code> 为本次二分查找的中心点）：</p>
+<ul>
+<li>当数组的左半部分不包含旋转部分时，<code>target</code> 在左半部分的条件为：<code>nums[0] &lt;= target &lt; nums[m]</code>。</li>
+<li>当数组的左半部分包含旋转部分时，有两种情况：<ul>
+<li><ol>
+<li><code>target</code> 不在旋转部分，此时条件为：<code>nums[m] &lt; nums[0] &lt;= target</code>。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li><code>target</code> 在旋转部分，此时条件为：<code>nums[m] &lt;= target &lt; nums[0]</code>。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p>对于以上三种情况，都可以认为 <code>target</code> 在数组的左半部分，否则在数组的右半部分，按照这个条件代入到二分查找的代码中即可。</p>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度：O(log n)，为二分查找算法的时间复杂度。</p>
 <p>空间复杂度：O(1)，只使用了常数个数的存储空间。</p>
-<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeNthFromEnd</span><span class="params">(head *ListNode, n <span class="type">int</span>)</span></span> *ListNode &#123;</span><br><span class="line">    dummy := &amp;ListNode&#123;Val: <span class="number">-1</span>, Next: head&#125;</span><br><span class="line">    f, s := head, dummy</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> f != <span class="literal">nil</span> &#123;</span><br><span class="line">        f = f.Next</span><br><span class="line">        s = s.Next</span><br><span class="line">    &#125;</span><br><span class="line">    s.Next = s.Next.Next</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dummy.Next</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="AC-代码"><a href="#AC-代码" class="headerlink" title="AC 代码"></a>AC 代码</h2><p>其实查询条件可以优化，现在这样写有点长，而且如果代码高亮没有括号着色功能的话容易看懵。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">search</span><span class="params">(nums []<span class="type">int</span>, target <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    n := <span class="built_in">len</span>(nums)</span><br><span class="line">    l, r := <span class="number">0</span>, n<span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span> l &lt;= r &#123;</span><br><span class="line">        m := l + ((r-l)&gt;&gt;<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> nums[m] == target &#123;</span><br><span class="line">            <span class="keyword">return</span> m</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (nums[<span class="number">0</span>]&lt;nums[m] &amp;&amp; nums[<span class="number">0</span>]&lt;=target &amp;&amp; target&lt;nums[m]) || (nums[<span class="number">0</span>]&gt;nums[m] &amp;&amp; (nums[m]&lt;nums[<span class="number">0</span>] &amp;&amp; nums[<span class="number">0</span>]&lt;=target) || (target&lt;=nums[m] &amp;&amp; nums[m]&lt;nums[<span class="number">0</span>])) &#123;</span><br><span class="line">            r = m - <span class="number">1</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            l = m + <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -182,7 +199,7 @@
         <p class="tags">
             
             <i class="icon"></i>
-            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Two-Pointers/" class="tag">#Two Pointers</a><a href="/tags/Linked-List/" class="tag">#Linked List</a>
+            <a href="/tags/Algorithm/" class="tag">#Algorithm</a><a href="/tags/Binary-Search/" class="tag">#Binary Search</a>
         </p>
         
     </div>
@@ -190,21 +207,21 @@
 
     <div class="container post-prev-next">
         
-        <a href="/c96db4f9094a/" class="next">
+        <a href="/816153baed83/" class="next">
             <div>
                 <div class="text">
                     <p class="label">Next</p>
-                    <h3 class="title">【LeetCode HOT 100】48. Rotate Image</h3>
+                    <h3 class="title">【LeetCode HOT 100】34. Find First and Last Position of Element in Sorted Array</h3>
                 </div>
             </div>
         </a>
         
         
-        <a href="/4b76ec1a08c6/" class="prev">
+        <a href="/c96db4f9094a/" class="prev">
             <div>
                 <div class="text">
                     <p class="label">Previous</p>
-                    <h3 class="title">【LeetCode HOT 100】11. Container With Most Water</>
+                    <h3 class="title">【LeetCode HOT 100】48. Rotate Image</>
                 </div>
             </div>
         </a>
