@@ -26,3 +26,4 @@ title: About
 - Email: [noellemu.dev@outlook.com](mailto:noellemu.dev@outlook.com) or [noellemu.dev@gmail.com](mailto:noellemu.dev@gmail.com)
 - Telegram: [𝐍𝐨𝐞𝐥𝐥𝐞 𝐌𝐮](https://t.me/noellemu)
 - Twitter: [Noelle Mu](https://twitter.com/noellemu_dev)
+- LeetCode: [Noelle Mu](https://leetcode.cn/u/noellemu/)
